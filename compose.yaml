@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: deploy/backend.Dockerfile
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      KOMARI_LISTEN: 0.0.0.0:25774
+    volumes:
+      - komari-data:/app/data
+    expose:
+      - "25774"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  frontend:
+    build:
+      context: .
+      dockerfile: deploy/frontend.Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${KOMARI_WEB_PORT:-8080}:80"
+    depends_on:
+      - backend
+
+volumes:
+  komari-data:

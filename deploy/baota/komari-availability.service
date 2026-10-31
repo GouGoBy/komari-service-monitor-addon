@@ -1,0 +1,17 @@
+[Unit]
+Description=Komari Availability API
+After=network.target
+
+[Service]
+Type=simple
+User=www
+Group=www
+WorkingDirectory=/www/wwwroot/komari/backend
+ExecStart=/www/wwwroot/komari/backend/komari server --listen 127.0.0.1:25774
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=45
+Environment=GIN_MODE=release
+
+[Install]
+WantedBy=multi-user.target
